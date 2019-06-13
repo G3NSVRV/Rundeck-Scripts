@@ -11,11 +11,11 @@ server_port="4440"
 token="AeqcX0xnywayfxbO4IrDNb3E9GwMA9tW"
 api_version=28
 #############################################
-mkdir exported_projects
+mkdir -p exported_projects
 for i in $(curl -s -X "GET" -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $token" http://"$server_host":"$server_port"/api/"$api_version"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
 do
-mkdir exported_projects/"$i"
-mkdir exported_projects/"$i"/jobs
+mkdir -p exported_projects/"$i"
+mkdir -p exported_projects/"$i"/jobs
 curl -s -X "GET" -H "Accept: application/xml" -H "Content-Type: application/xml" -H "X-Rundeck-Auth-Token: $token" http://"$server_host":"$server_port"/api/"$api_version"/project/"$i"/config > exported_projects/"$i"/"$i".project
 for n in $(curl -s -X "GET" -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $token" http://"$server_host":"$server_port"/api/"$api_version"/project/"$i"/jobs | sed 's/,/\n/g' | grep id | cut -d ":" -f2 | tr -d '"')
 do
@@ -23,4 +23,4 @@ curl -s -X "GET" -H "Accept: application/yaml" -H "Content-Type: application/jso
 done
 done
 
-echo -e "\n\n[ Please go to ""exported_projects"" folder ]"
+echo -e "\n[ Please go to ""exported_projects"" folder ]"
