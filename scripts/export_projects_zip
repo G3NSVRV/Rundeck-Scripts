@@ -1,14 +1,14 @@
 #!/bin/bash
 #############################################
-# echo "Insert the Rundeck Server hostname:"; read -r serverHost
-# echo -e "\nWhich port?:"; read -r serverPort
-# echo -e "\nCopy and Paste the Rundeck API Token:"; read -r token
+echo "Insert the Rundeck Server hostname:"; read -r serverHost
+echo -e "\nWhich port?:"; read -r serverPort
+echo -e "\nCopy and Paste the Rundeck API Token:"; read -r token
 #############################################
 # to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
 #############################################
-serverHost="localhost"
-serverPort="4440"
-token="CJZUZ36yMZmXLQjxOr8VdE8V2WrOanvm"
+# serverHost="localhost"
+# serverPort="4440"
+# token="CJZUZ36yMZmXLQjxOr8VdE8V2WrOanvm"
 apiVersion=24
 options="exportAll=true"
 # options="exportJobs=true"
