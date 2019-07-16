@@ -19,7 +19,8 @@
       <command>
         <fileExtension>sh</fileExtension>
         <script><![CDATA[#!/bin/bash
-echo "It's working" $(date +%x)]]></script>
+echo "It's working" $(date +%x)
+echo "Hello from GitHub"]]></script>
         <scriptargs />
         <scriptinterpreter>sh</scriptinterpreter>
       </command>
