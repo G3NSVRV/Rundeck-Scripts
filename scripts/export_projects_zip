@@ -9,7 +9,7 @@ echo -e "\nCopy and Paste the Rundeck API Token:"; read -r token
 # serverHost="localhost"
 # serverPort="4440"
 # token="Y0poshp9XRLspghSnaawHj1iphDroAWG"
-apiVersion=17
+apiVersion=20
 options="exportAll=true"
 # options="exportJobs=true"
 # options="$options&exportExecutions=true"
