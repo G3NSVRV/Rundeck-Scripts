@@ -1,0 +1,27 @@
+#!/bin/bash
+#############################################
+echo "Insert the Rundeck Server hostname:"; read -r serverHost
+echo -e "\nWhich port?:"; read -r serverPort
+echo -e "\nCopy and Paste the Rundeck API Token:"; read -r token
+#############################################
+# to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
+#############################################
+# serverHost="localhost"
+# serverPort="4440"
+# token="AeqcX0xnywayfxbO4IrDNb3E9GwMA9tW"
+apiVersion=17
+options="exportAll=true"
+# options="exportJobs=true"
+# options="$options&exportExecutions=true"
+# options="$options&exportConfigs=true"
+# options="$options&exportReadmes=true"
+# options="$options&exportAcls=true"
+#############################################
+for projectName in $(curl -s -X "GET" -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $token" http://"$serverHost":"$serverPort"/api/"$apiVersion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
+do
+echo "Project $projectName"
+curl -s -X "GET" -H "Accept: application/zip" -H "Content-Type: application/zip" -H "X-Rundeck-Auth-Token: $token" http://"$serverHost":"$serverPort"/api/"$apiVersion"/project/"$projectName"/executions/running
+echo ""
+jobId=$(curl -s -X "GET" -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $token" http://"$serverHost":"$serverPort"/api/"$apiVersion"/project/"$projectName"/executions?max=1|sed 's/,/\n/g'|grep executions|cut -d ":" -f3)
+echo -e "Last Job ID $jobId\n"
+done
