@@ -20,7 +20,8 @@
         <fileExtension>sh</fileExtension>
         <script><![CDATA[#!/bin/bash
 echo "It's working" $(date +%x)
-echo "Hello from GitHub"]]></script>
+echo "Hello from GitHub"
+echo "Hello from Rundeck"]]></script>
         <scriptargs />
         <scriptinterpreter>sh</scriptinterpreter>
       </command>
