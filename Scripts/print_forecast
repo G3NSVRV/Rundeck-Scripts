@@ -1,0 +1,32 @@
+#!/bin/bash
+#############################################
+echo "Insert the Rundeck Server hostname:"; read -r rundeckServer
+echo -e "\nWhich port?:"; read -r rundeckPort
+echo -e "\nCopy and Paste the Rundeck API Token:"; read -r rundeckApitoken
+#############################################
+# to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
+#############################################
+# rundeckServer="node01.rundeck.local"
+# rundeckPort="4440"
+# rundeckApitoken="P0K0EvIAoWkAbmvj3JnlelmwaVhF5AJd"
+#############################################
+# Options Variables
+#############################################
+rundeckProtocol="http"
+rundeckApiversion="31"
+rundeckApiformat="json"
+curlOptions="-s"
+#############################################
+mkdir -p exported_projects
+
+for projectName in $(curl -X "GET" "$curlOptions" -H "Accept: application/$rundeckApiformat" -H "Content-Type: application/$rundeckApiformat" -H "X-Rundeck-Auth-Token: $rundeckApitoken" "$rundeckProtocol"://"$rundeckServer":"$rundeckPort"/api/"$rundeckApiversion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
+do
+for jobId in $(curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiformat" -H "Content-Type: application/$rundeckApiformat" -H "X-Rundeck-Auth-Token: $rundeckApitoken" "$rundeckProtocol"://"$rundeckServer":"$rundeckPort"/api/"$rundeckApiversion"/project/"$projectName"/jobs | sed 's/,/\n/g' | grep id | cut -d ":" -f2 | tr -d '"')
+do
+echo
+curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiformat" -H "Content-Type: application/$rundeckApiformat" -H "X-Rundeck-Auth-Token: $rundeckApitoken" "$rundeckProtocol"://"$rundeckServer":"$rundeckPort"/api/"$rundeckApiversion"/job/"$jobId"/forecast?time=7d
+echo
+done
+done
+
+echo -e "\n[ Please go to ""exported_projects"" folder ]"
