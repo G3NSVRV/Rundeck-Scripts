@@ -1,14 +1,14 @@
 #!/bin/bash
 #############################################
-# echo "Insert the Rundeck Server hostname:"; read -r rundeckServer
-# echo -e "\nWhich port?:"; read -r rundeckPort
-# echo -e "\nCopy and Paste the Rundeck API Token:"; read -r rundeckApitoken
+echo "Insert the Rundeck Server hostname:"; read -r rundeckServer
+echo -e "\nWhich port?:"; read -r rundeckPort
+echo -e "\nCopy and Paste the Rundeck API Token:"; read -r rundeckApitoken
 #############################################
 # to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
 #############################################
-rundeckServer="node01.rundeck.local"
-rundeckPort="4440"
-rundeckApitoken="P0K0EvIAoWkAbmvj3JnlelmwaVhF5AJd"
+# rundeckServer="node01.rundeck.local"
+# rundeckPort="4440"
+# rundeckApitoken="P0K0EvIAoWkAbmvj3JnlelmwaVhF5AJd"
 #############################################
 # Options Variables
 #############################################
