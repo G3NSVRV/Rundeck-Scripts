@@ -17,6 +17,7 @@ rundeckApiversion="31"
 rundeckApiformat="json"
 curlOptions="-s"
 #############################################
+echo
 echo "The following Jobs are Scheduled in the next 7 Days:"
 echo
 for projectName in $(curl -X "GET" "$curlOptions" -H "Accept: application/$rundeckApiformat" -H "Content-Type: application/$rundeckApiformat" -H "X-Rundeck-Auth-Token: $rundeckApitoken" "$rundeckProtocol"://"$rundeckServer":"$rundeckPort"/api/"$rundeckApiversion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
