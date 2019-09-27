@@ -11,7 +11,7 @@
     <executionEnabled>true</executionEnabled>
     <id>8aeccf97-1550-450f-9493-e42d8fb1d855</id>
     <loglevel>INFO</loglevel>
-    <name>test_capture_ERROR_string</name>
+    <name>CaptureErrorLogAndFail_Ruleset</name>
     <nodeFilterEditable>false</nodeFilterEditable>
     <scheduleEnabled>true</scheduleEnabled>
     <sequence keepgoing='true' strategy='ruleset'>
