@@ -8,12 +8,6 @@
     <loglevel>INFO</loglevel>
     <name>JSONtoCSV</name>
     <nodeFilterEditable>false</nodeFilterEditable>
-    <schedule>
-      <month month='*' />
-      <time hour='08' minute='00' seconds='0' />
-      <weekday day='*' />
-      <year year='*' />
-    </schedule>
     <scheduleEnabled>true</scheduleEnabled>
     <sequence keepgoing='false' strategy='node-first'>
       <command>
