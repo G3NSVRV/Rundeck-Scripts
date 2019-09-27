@@ -1,0 +1,163 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option enforcedvalues='true' name='Splunk_Env' required='true' value='Stg' values='Prd,Stg' valuesListDelimiter=',' />
+        <option enforcedvalues='true' name='Splunk_Apps_Name' required='true' valuesUrl='file:/opt/rundeck/projects/${job.project}/options/${job.group}/${job.name}/${option.Splunk_Env.value}/Splunk_Apps_Name.json' />
+        <option enforcedvalues='true' name='Splunk_Saved_Search' required='true' valuesUrl='file:/opt/rundeck/projects/${job.project}/options/${job.group}/${job.name}/${option.Splunk_Env.value}/${option.Splunk_Apps_Name.value}-saved_searches.json' />
+        <option enforcedvalues='true' name='Staging_Long_Token' required='true' value='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MSIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJkb2xpdmFzIGZyb20gY2htZ2w1bW4wOCIsInN1YiI6InJkazlzcGsiLCJhdWQiOiJSdW5kZWNrIiwiaWRwIjoibGRhcHM6Ly9sZGFwY29ycHJkdmlwLnRyYW5zdW5pb24uY29tIiwianRpIjoiNGVkOGVmNTAyNTc4Yjg4ZTYxMzEyZmZhYmY3YmNkMWNiZmYzMWE3OTg2NjVmMzYzMTZmOTBiY2NjZTZmNTA4ZiIsImlhdCI6MTU2NDA3MjM5OCwiZXhwIjo0MTIwMjY4MzQwLCJuYnIiOjE1NjQwNzIzOTh9.7b-0OeGnv8hJzoDanOKLb3fTVWG-KStL1DvpHGgh5Am3wHij41gi5t91rhDk39B_vFYFMe8TqpRZraQDFb9QIw' values='eyJraWQiOiJzcGx1bmsuc2VjcmV0IiwiYWxnIjoiSFM1MTIiLCJ2ZXIiOiJ2MSIsInR0eXAiOiJzdGF0aWMifQ.eyJpc3MiOiJkb2xpdmFzIGZyb20gY2htZ2w1bW4wOCIsInN1YiI6InJkazlzcGsiLCJhdWQiOiJSdW5kZWNrIiwiaWRwIjoibGRhcHM6Ly9sZGFwY29ycHJkdmlwLnRyYW5zdW5pb24uY29tIiwianRpIjoiNGVkOGVmNTAyNTc4Yjg4ZTYxMzEyZmZhYmY3YmNkMWNiZmYzMWE3OTg2NjVmMzYzMTZmOTBiY2NjZTZmNTA4ZiIsImlhdCI6MTU2NDA3MjM5OCwiZXhwIjo0MTIwMjY4MzQwLCJuYnIiOjE1NjQwNzIzOTh9.7b-0OeGnv8hJzoDanOKLb3fTVWG-KStL1DvpHGgh5Am3wHij41gi5t91rhDk39B_vFYFMe8TqpRZraQDFb9QIw' valuesListDelimiter=','>
+          <hidden>true</hidden>
+        </option>
+        <option name='Splunk_Password' required='true' secure='true' storagePath='keys/Enterprise_Monitoring/rdk9spk' valueExposed='true'>
+          <hidden>true</hidden>
+        </option>
+      </options>
+    </context>
+    <defaultTab>summary</defaultTab>
+    <description>Testing</description>
+    <executionEnabled>true</executionEnabled>
+    <group>Utilities/Splunk</group>
+    <id>2b378f64-29d6-4460-96ae-a561bd3b02a4</id>
+    <loglevel>INFO</loglevel>
+    <multipleExecutions>true</multipleExecutions>
+    <name>Execute_Saved_Search</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Try HTTP Step</description>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>true</logData>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Authorization: Bearer ${option.Staging_Long_Token}&#10;accept: application/json' />
+            <entry key='method' value='POST' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${option.Splunk_Saved_Search}/dispatch/?output_mode=json&amp;trigger_actions=1' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>false</logData>
+              <regex>(.+?)\s*=\s*(.+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[#!/bin/env bash
+
+echo "Splunk_SID = @data.sid@"]]></script>
+        <scriptargs />
+      </command>
+      <command>
+        <step-plugin type='export-var'>
+          <configuration>
+            <entry key='export' value='Global_SID' />
+            <entry key='group' value='export' />
+            <entry key='value' value='${data.sid*}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='log-data-step'>
+          <configuration>
+            <entry key='debugOnly' value='false' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>Try HTTP Step</description>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>true</logData>
+              <prefix>SID</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Authorization: Bearer ${option.Staging_Long_Token}&#10;accept: application/json' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='https://chmgl5mn08:8089/servicesNS/nobody/${option.Splunk_Apps_Name}/search/jobs/${data.sid}/results?output_mode=json' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>Try HTTP Step</description>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>true</logData>
+              <prefix>SPLUNK_SID</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Authorization: Bearer ${option.Staging_Long_Token}&#10;accept: application/json' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='https://chmgl5mn08:8089/servicesNS/nobody/${option.Splunk_Apps_Name}/search/jobs/${data.Splunk_SID}/results?output_mode=json' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>Try HTTP Step</description>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>true</logData>
+              <prefix>GLB_SID</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Authorization: Bearer ${option.Staging_Long_Token}&#10;accept: application/json' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='https://chmgl5mn08:8089/servicesNS/nobody/${option.Splunk_Apps_Name}/search/jobs/${export.Global_SID}/results?output_mode=json' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>2b378f64-29d6-4460-96ae-a561bd3b02a4</uuid>
+  </job>
+</joblist>
