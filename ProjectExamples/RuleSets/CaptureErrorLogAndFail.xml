@@ -1,8 +1,8 @@
 <joblist>
   <job>
     <context>
-      <options>
-        <option />
+      <options preserveOrder='true'>
+        <option name='error' values='ERROR' valuesListDelimiter=',' />
       </options>
     </context>
     <defaultTab>output</defaultTab>
@@ -15,8 +15,52 @@
     <name>CaptureErrorLogAndFail</name>
     <nodeFilterEditable>false</nodeFilterEditable>
     <scheduleEnabled>true</scheduleEnabled>
-    <sequence>
-      <command />
+    <sequence keepgoing='true' strategy='ruleset'>
+      <command>
+        <description>This step represents the required script </description>
+        <errorhandler>
+          <exec>echo no funciona</exec>
+        </errorhandler>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>true</logData>
+              <regex>^.*(ERROR)(.*)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[#!/bin/bash
+
+echo Start script....
+
+echo @option.error@ An error has been occurred
+
+echo Script finishes OK]]></script>
+        <scriptargs />
+      </command>
+      <command>
+        <description>This step Exports the captured data to Global</description>
+        <errorhandler keepgoingOnSuccess='true'>
+          <exec>echo THERE IS NO ERROR</exec>
+        </errorhandler>
+        <step-plugin type='export-var'>
+          <configuration>
+            <entry key='export' value='ERROR' />
+            <entry key='group' value='export' />
+            <entry key='value' value='${data.ERROR*}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>This step forces the Job to FAIL</description>
+        <step-plugin type='flow-control'>
+          <configuration>
+            <entry key='fail' value='true' />
+            <entry key='halt' value='true' />
+            <entry key='status' value='AN ERROR HAS BEEN DETECTED' />
+          </configuration>
+        </step-plugin>
+      </command>
       <pluginConfig>
         <WorkflowStrategy>
           <ruleset>
