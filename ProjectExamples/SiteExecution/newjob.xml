@@ -1,0 +1,30 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>SiteExecution</group>
+    <id>34360fd4-972c-40f5-8e0c-251cf0a7d478</id>
+    <loglevel>INFO</loglevel>
+    <name>newjob</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>tags: ${globals.site}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>echo ${globals.site}</exec>
+      </command>
+    </sequence>
+    <uuid>34360fd4-972c-40f5-8e0c-251cf0a7d478</uuid>
+  </job>
+</joblist>
