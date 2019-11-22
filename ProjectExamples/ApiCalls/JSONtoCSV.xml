@@ -3,7 +3,7 @@
     <defaultTab>output</defaultTab>
     <description></description>
     <executionEnabled>true</executionEnabled>
-    <group>Conversion</group>
+    <group>ApiCalls</group>
     <id>79bcc68b-0f1e-41db-b85d-a20087163ff1</id>
     <loglevel>INFO</loglevel>
     <name>JSONtoCSV</name>

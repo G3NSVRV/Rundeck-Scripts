@@ -9,14 +9,24 @@
     <defaultTab>output</defaultTab>
     <description></description>
     <executionEnabled>true</executionEnabled>
-    <group>Conversion</group>
-    <id>137fc14f-3c87-4e7b-a63c-5bc35b3b327c</id>
+    <group>ApiCalls</group>
+    <id>38636d83-97eb-40dc-b4c2-e521bc122acb</id>
     <loglevel>INFO</loglevel>
-    <name>HttpRequest_WorkflowStep</name>
+    <name>HttpRequest_NodeStep</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <notification>
+      <onfailure>
+        <email recipients='example@email.local' subject='${execution.status} / ${job.name}' />
+      </onfailure>
+      <onsuccess>
+        <email recipients='example@email.local' subject='${execution.status} / ${job.name}' />
+      </onsuccess>
+    </notification>
+    <notifyAvgDurationThreshold />
     <scheduleEnabled>true</scheduleEnabled>
     <sequence keepgoing='false' strategy='node-first'>
       <command>
+        <description>Echo and log origin URL.</description>
         <plugins>
           <LogFilter type='key-value-data'>
             <config>
@@ -25,11 +35,10 @@
             </config>
           </LogFilter>
         </plugins>
-        <step-plugin type='nixy-local-workflow-step'>
-          <configuration>
-            <entry key='script' value='#!/bin/env bash&#10;&#10;echo "OriginURL=${option.originUrl}"' />
-          </configuration>
-        </step-plugin>
+        <script><![CDATA[#!/bin/env bash
+
+echo "OriginURL=@option.originUrl@"]]></script>
+        <scriptargs />
       </command>
       <command>
         <step-plugin type='log-data-step'>
@@ -64,7 +73,7 @@
             <entry key='printResponse' value='true' />
             <entry key='printResponseToFile' value='false' />
             <entry key='proxySettings' value='false' />
-            <entry key='remoteUrl' value='${data.OriginURL}/json' />
+            <entry key='remoteUrl' value='${data.OriginURL@node01.rundeck.local}/json' />
             <entry key='sslVerify' value='false' />
             <entry key='timeout' value='30000' />
           </configuration>
@@ -81,13 +90,13 @@
             <entry key='printResponse' value='true' />
             <entry key='printResponseToFile' value='false' />
             <entry key='proxySettings' value='false' />
-            <entry key='remoteUrl' value='${option.targetUrl}/post?something' />
+            <entry key='remoteUrl' value='${option.targetUrl}/post' />
             <entry key='sslVerify' value='true' />
             <entry key='timeout' value='30000' />
           </configuration>
         </step-plugin>
       </command>
     </sequence>
-    <uuid>137fc14f-3c87-4e7b-a63c-5bc35b3b327c</uuid>
+    <uuid>38636d83-97eb-40dc-b4c2-e521bc122acb</uuid>
   </job>
 </joblist>
