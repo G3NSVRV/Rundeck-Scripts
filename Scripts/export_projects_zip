@@ -1,13 +1,11 @@
 #!/bin/bash
 #############################################
-echo "Insert the Rundeck Server hostname:"; read -r serverHost
-echo -e "\nWhich port?:"; read -r serverPort
+echo "Insert the Rundeck Server url:(e.g. http://rundeck.local:4440)"; read -r serverHost
 echo -e "\nCopy and Paste the Rundeck API Token:"; read -r token
 #############################################
 # to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
 #############################################
 # serverHost="localhost"
-# serverPort="4440"
 # token="Y0poshp9XRLspghSnaawHj1iphDroAWG"
 apiVersion=17
 options="exportAll=true"
@@ -20,6 +18,6 @@ options="exportAll=true"
 mkdir -p exported_projects
 for projectName in $(curl -s -X "GET" -H "Accept: application/json" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $token" http://"$serverHost":"$serverPort"/api/"$apiVersion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
 do
-curl -s -X "GET" -H "Accept: application/zip" -H "Content-Type: application/zip" -H "X-Rundeck-Auth-Token: $token" http://"$serverHost":"$serverPort"/api/"$apiVersion"/project/"$projectName"/export?"$options" > exported_projects/"$projectName".jar
+curl -s -X "GET" -H "Accept: application/zip" -H "Content-Type: application/zip" -H "X-Rundeck-Auth-Token: $token" "$serverHost"/api/"$apiVersion"/project/"$projectName"/export?"$options" > exported_projects/"$projectName".jar
 done
 echo -e "\n[ Please go to ""exported_projects"" folder ]"
