@@ -1,0 +1,59 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>5242</group>
+    <id>3e42c9ec-d59e-4c87-8ae2-156c72a59153</id>
+    <loglevel>INFO</loglevel>
+    <name>TestJSON</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <fileExtension>.ps1</fileExtension>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>true</logData>
+              <prefix>result</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[#Requires -Version 3
+
+$InputData = [PSCustomObject]@{
+RequestNumber = "REQ12345"
+}
+
+$OutputData = [PSCustomObject]@{
+Mailbox = "joe.bloggs@test.com"
+MailboxGivenName = "joe.bloggs"
+Owner = "steve.walker@test.com"
+Output1 = "Result1"
+Array = @("Test1", "Test2")
+Output2 = "Result2"
+Retry = 0
+ScriptExitText = ""
+}
+
+$AOResults =[PSCustomObject]@{
+Inputs = $InputData
+Outputs = $OutputData
+}
+
+$OutputJSON = $AOResults | ConvertTo-Json -Compress
+
+Write-Host "$($OutputJSON)"
+
+exit 0
+]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>3e42c9ec-d59e-4c87-8ae2-156c72a59153</uuid>
+  </job>
+</joblist>

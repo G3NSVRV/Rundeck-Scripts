@@ -1,0 +1,98 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option enforcedvalues='true' name='region' required='true' values='cn,uk,us' valuesListDelimiter=',' />
+        <option name='apiToken' value='3qIgTVJtTX9cbAz7kaq7H9K8gEP30eAx' />
+        <option enforcedvalues='true' name='job' valuesUrl='file:/home/rundeck/list.json' />
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>SiteExecution</group>
+    <id>fb49556d-0048-4032-a832-aee77095cf74</id>
+    <loglevel>INFO</loglevel>
+    <name>MainJob</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>false</logData>
+              <regex>(.+)=(.+)</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='nixy-local-workflow-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;if [ "${option.region}" == "us" ]&#10;    then&#10;    rundeckServer="node01.rundeck.local"&#10;    elif [ "${option.region}" == "uk" ]&#10;        then&#10;        rundeckServer="node02.rundeck.local"&#10;        else&#10;            rundeckServer="node03.rundeck.local"&#10;fi&#10;&#10;echo "rundeckServer=$rundeckServer"' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.</filter>
+              <logData>false</logData>
+              <prefix>result</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Accept: application/json&#10;Content-Type: application/json&#10;X-Rundeck-Auth-Token: ${option.apiToken}' />
+            <entry key='method' value='POST' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='http://${data.rundeckServer}:4440/api/27/job/${option.job}/run?filter=tags:${option.region}' />
+            <entry key='sslVerify' value='true' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='result-executions'>
+          <configuration>
+            <entry key='executions' value='${data.id}' />
+            <entry key='fail on failed execution' value='true' />
+            <entry key='json display' value='false' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='render-datatype'>
+            <config>
+              <datatype>application/json</datatype>
+              <sanitizeHtml>true</sanitizeHtml>
+              <striped>false</striped>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Accept: application/json&#10;Content-Type: application/json&#10;X-Rundeck-Auth-Token: ${option.apiToken}' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='http://${data.rundeckServer}:4440/api/27/execution/${data.id}/output' />
+            <entry key='sslVerify' value='true' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>fb49556d-0048-4032-a832-aee77095cf74</uuid>
+  </job>
+</joblist>

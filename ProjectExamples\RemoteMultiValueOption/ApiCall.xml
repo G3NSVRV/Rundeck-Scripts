@@ -1,0 +1,45 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='rundeckServer' value='http://localhost:4440'>
+          <hidden>true</hidden>
+        </option>
+        <option name='apiToken' required='true' value='QNSvgnBP8UpUEm7DeYCyTcNEMeaWE8lW' />
+        <option name='apiVersion' required='true' value='27'>
+          <hidden>true</hidden>
+        </option>
+        <option name='jobUUID' required='true' value='e7a5118f-9c45-4c59-8f50-2a1df8cfa348' />
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>RemoteMultiValueOption</group>
+    <id>2e38a3e2-9617-41df-99e0-ad2da560ed38</id>
+    <loglevel>INFO</loglevel>
+    <name>ApiCall</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='Accept: application/json&#10;X-Rundeck-Auth-Token: ${option.apiToken}' />
+            <entry key='method' value='POST' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${option.rundeckServer}/api/${option.apiVersion}/job/${option.jobUUID}/run' />
+            <entry key='sslVerify' value='true' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>2e38a3e2-9617-41df-99e0-ad2da560ed38</uuid>
+  </job>
+</joblist>

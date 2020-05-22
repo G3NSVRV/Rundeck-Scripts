@@ -1,0 +1,35 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='apiToken' required='true' value='o4eBUHVZ9gcQtlIQIClvswrQsxT6uxqa' />
+        <option name='apiVersion' required='true' value='27'>
+          <hidden>true</hidden>
+        </option>
+        <option name='rundeckServer' value='http://localhost:4440'>
+          <hidden>true</hidden>
+        </option>
+      </options>
+    </context>
+    <defaultTab>summary</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>Backup</group>
+    <id>999ceaf0-8e39-409f-982b-6a1d9b22ec0e</id>
+    <loglevel>INFO</loglevel>
+    <name>DownloadACLpolicies</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <step-plugin type='nixy-local-workflow-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;mkdir -p "$HOME"/ACL&#10;for acl in $(curl -s -X GET -H "Accept: application/json" -H "X-Rundeck-Auth-Token: ${option.apiToken}" "${option.rundeckServer}"/api/"${option.apiVersion}"/system/acl/ | jq &apos;.resources&apos; | grep name | cut -d &apos;:&apos; -f2 | tr -d &apos;" &apos;)&#10;do&#10;    curl -s -X GET -H "Accept: application/yaml" -H "X-Rundeck-Auth-Token: ${option.apiToken}" "${option.rundeckServer}"/api/"${option.apiVersion}"/system/acl/"$acl" &gt; "$HOME"/ACL/"$acl"&#10;done&#10;&#10;echo "&gt;&gt; Please locate the ACL policies under the folder $HOME/ACL &lt;&lt;"&#10;echo&#10;echo "Exported Files:"&#10;ls "$HOME"/ACL' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>999ceaf0-8e39-409f-982b-6a1d9b22ec0e</uuid>
+  </job>
+</joblist>

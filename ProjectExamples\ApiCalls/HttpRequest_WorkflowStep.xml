@@ -1,0 +1,94 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='originUrl' value='http://httpbin.org' />
+        <option name='targetUrl' value='http://httpbin.org' />
+      </options>
+    </context>
+    <defaultTab>output</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>ApiCalls</group>
+    <id>137fc14f-3c87-4e7b-a63c-5bc35b3b327c</id>
+    <loglevel>INFO</loglevel>
+    <name>HttpRequest_WorkflowStep</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>true</logData>
+              <regex>(.+)=(.+)</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='nixy-local-workflow-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/env bash&#10;&#10;echo "OriginURL=${option.originUrl}"' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='log-data-step'>
+          <configuration>
+            <entry key='debugOnly' value='false' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.slideshow | keys</filter>
+              <logData>true</logData>
+              <prefix>keys</prefix>
+            </config>
+          </LogFilter>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.slideshow</filter>
+              <logData>true</logData>
+              <prefix>data</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='accept: application/json' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${data.OriginURL}/json' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='body' value='{&#10;"${data.keys.0}": "${data.author}",&#10;"${data.keys.1}": "${data.date}",&#10;"${data.keys.2}": "${data.title}"&#10;}' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='accept: application/json' />
+            <entry key='method' value='POST' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${option.targetUrl}/post?something' />
+            <entry key='sslVerify' value='true' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>137fc14f-3c87-4e7b-a63c-5bc35b3b327c</uuid>
+  </job>
+</joblist>
