@@ -8,7 +8,9 @@
     <loglevel>INFO</loglevel>
     <name>NormalJobBehaviour</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <errorhandler>

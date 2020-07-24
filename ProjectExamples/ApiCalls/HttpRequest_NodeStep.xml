@@ -23,7 +23,9 @@
       </onsuccess>
     </notification>
     <notifyAvgDurationThreshold />
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <description>Echo and log origin URL.</description>

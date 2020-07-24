@@ -27,6 +27,7 @@
     <nodesSelectedByDefault>true</nodesSelectedByDefault>
     <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <description>Destroy Global ACLs</description>

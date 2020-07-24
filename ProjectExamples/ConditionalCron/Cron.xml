@@ -8,6 +8,7 @@
     <loglevel>INFO</loglevel>
     <name>Cron</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <schedule>
       <dayofmonth />
       <month day='1' month='*' />
@@ -15,6 +16,7 @@
       <year year='*' />
     </schedule>
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <fileExtension>sh</fileExtension>

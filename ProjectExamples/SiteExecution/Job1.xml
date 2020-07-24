@@ -20,7 +20,9 @@
       <filter>.</filter>
     </nodefilters>
     <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <exec>echo JOB1</exec>

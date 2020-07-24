@@ -15,7 +15,9 @@
     <loglevel>INFO</loglevel>
     <name>RemoteMultiValueOptionTest</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <exec>echo HELLO</exec>

@@ -15,7 +15,9 @@
     <loglevel>INFO</loglevel>
     <name>MainJob</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <plugins>

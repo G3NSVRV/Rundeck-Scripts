@@ -14,7 +14,9 @@
     <loglevel>INFO</loglevel>
     <name>RemoveAllJobsFromAProject</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <step-plugin type='nixy-local-workflow-step'>

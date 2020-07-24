@@ -8,7 +8,9 @@
     <loglevel>INFO</loglevel>
     <name>BugJob</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='true' strategy='node-first'>
       <command>
         <errorhandler>

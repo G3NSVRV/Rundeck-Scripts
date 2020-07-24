@@ -14,7 +14,9 @@
     <loglevel>INFO</loglevel>
     <name>CaptureErrorLogAndFail</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='true' strategy='ruleset'>
       <command>
         <description>This step represents the required script </description>

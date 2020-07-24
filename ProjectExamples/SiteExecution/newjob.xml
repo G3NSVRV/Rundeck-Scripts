@@ -19,7 +19,9 @@
       <filter>tags: ${globals.site}</filter>
     </nodefilters>
     <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <exec>echo ${globals.site}</exec>

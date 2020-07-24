@@ -20,7 +20,9 @@
     <loglevel>INFO</loglevel>
     <name>ApiCall</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
     <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
     <sequence keepgoing='false' strategy='node-first'>
       <command>
         <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
