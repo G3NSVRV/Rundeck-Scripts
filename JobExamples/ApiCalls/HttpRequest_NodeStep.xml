@@ -1,0 +1,104 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='originUrl' value='http://httpbin.org' />
+        <option name='targetUrl' value='http://httpbin.org' />
+      </options>
+    </context>
+    <defaultTab>output</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>ApiCalls</group>
+    <id>38636d83-97eb-40dc-b4c2-e521bc122acb</id>
+    <loglevel>INFO</loglevel>
+    <name>HttpRequest_NodeStep</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <notification>
+      <onfailure>
+        <email recipients='example@email.local' subject='${execution.status} / ${job.name}' />
+      </onfailure>
+      <onsuccess>
+        <email recipients='example@email.local' subject='${execution.status} / ${job.name}' />
+      </onsuccess>
+    </notification>
+    <notifyAvgDurationThreshold />
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Echo and log origin URL.</description>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>true</logData>
+              <regex>(.+)=(.+)</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[#!/bin/env bash
+
+echo "OriginURL=@option.originUrl@"]]></script>
+        <scriptargs />
+      </command>
+      <command>
+        <step-plugin type='log-data-step'>
+          <configuration>
+            <entry key='debugOnly' value='false' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.slideshow | keys</filter>
+              <logData>true</logData>
+              <prefix>keys</prefix>
+            </config>
+          </LogFilter>
+          <LogFilter type='json-mapper'>
+            <config>
+              <filter>.slideshow</filter>
+              <logData>true</logData>
+              <prefix>data</prefix>
+            </config>
+          </LogFilter>
+        </plugins>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='accept: application/json' />
+            <entry key='method' value='GET' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${data.OriginURL@node01.rundeck.local}/json' />
+            <entry key='sslVerify' value='false' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='edu.ohio.ais.rundeck.HttpWorkflowStepPlugin'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='body' value='{&#10;"${data.keys.0}": "${data.author}",&#10;"${data.keys.1}": "${data.date}",&#10;"${data.keys.2}": "${data.title}"&#10;}' />
+            <entry key='checkResponseCode' value='false' />
+            <entry key='headers' value='accept: application/json' />
+            <entry key='method' value='POST' />
+            <entry key='printResponse' value='true' />
+            <entry key='printResponseToFile' value='false' />
+            <entry key='proxySettings' value='false' />
+            <entry key='remoteUrl' value='${option.targetUrl}/post' />
+            <entry key='sslVerify' value='true' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>38636d83-97eb-40dc-b4c2-e521bc122acb</uuid>
+  </job>
+</joblist>

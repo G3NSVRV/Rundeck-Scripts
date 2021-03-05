@@ -1,0 +1,105 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='initialNumber' regex='\d+' value='0'>
+          <label>How many projects do you already have?</label>
+        </option>
+        <option name='projectNumber' regex='\d+' value='1'>
+          <label>How many projects do you want to create?</label>
+        </option>
+        <option name='RD_TOKEN' value='Xpra9Q2TwauYNehRALv03ZNOCMB20edP' />
+        <option name='RD_APIVERSION' value='33' />
+      </options>
+    </context>
+    <defaultTab>output</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>ACL_PERFORMANCE_TESTS</group>
+    <id>06417235-ea6b-47b0-b0e5-7a7d380020cb</id>
+    <loglevel>INFO</loglevel>
+    <name>create_projects_and_assign_acl_globally_original</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: node02.rundeck.local</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Create ACLs</description>
+        <step-plugin type='nixy-local-workflow-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;echo "by:&#10;  group: [edit_this_variable]&#10;description: nodes&#10;for:&#10;  node:&#10;  - allow:&#10;    - &apos;*&apos;&#10;    match:&#10;      nodename: &apos;.*&apos;&#10;context:&#10;  project: edit_this_variable&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: nodes (all)&#10;for:&#10;  resource:&#10;  - allow:&#10;    - read&#10;    equals:&#10;      kind: node&#10;context:&#10;  project: edit_this_variable&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: jobs&#10;for:&#10;  job:&#10;  - allow: [read,view,run]&#10;    match:&#10;      name: &apos;.*&apos;&#10;context:&#10;  project: edit_this_variable&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: read edit_this_variable&#10;for:&#10;  project:&#10;  - allow:&#10;    - read&#10;    equals:&#10;      name: edit_this_variable&#10;context:&#10;  application: rundeck&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: allow [*] keys/chef&#10;for:&#10;  storage:&#10;  - allow:&#10;    - &apos;*&apos;&#10;    match:&#10;      path: keys/chef/.*&#10;  - allow:&#10;    - &apos;*&apos;&#10;    equals:&#10;      path: keys/chef&#10;context:&#10;  application: rundeck&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: allow [*] keys/jenkins/jenkins_farm_provisioner&#10;for:&#10;  storage:&#10;  - allow:&#10;    - &apos;*&apos;&#10;    match:&#10;      path: keys/jenkins/jenkins_farm_provisioner&#10;  - allow:&#10;    - &apos;*&apos;&#10;    equals:&#10;      path: keys/jenkins&#10;context:&#10;  application: rundeck&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: allow [*] keys/CSGIDEV/svc_vra_asa_ci&#10;for:&#10;  storage:&#10;  - allow:&#10;    - &apos;*&apos;&#10;    match:&#10;      path: keys/CSGIDEV/svc_vra_asa_ci&#10;  - allow:&#10;    - &apos;*&apos;&#10;    equals:&#10;      path: keys/CSGIDEV&#10;context:&#10;  application: rundeck&#10;---&#10;by:&#10;  group: [edit_this_variable]&#10;description: allow [*] keys/edit_this_variable&#10;for:&#10;  storage:&#10;  - allow:&#10;    - &apos;*&apos;&#10;    match:&#10;      path: keys/edit_this_variable/.*&#10;  - allow:&#10;    - &apos;*&apos;&#10;    equals:&#10;      path: keys/edit_this_variable&#10;context:&#10;  application: rundeck" &gt; project.aclpolicy' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>Create Example Job</description>
+        <step-plugin type='nixy-local-workflow-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;echo "&lt;joblist&gt;&#10;  &lt;job&gt;&#10;    &lt;defaultTab&gt;nodes&lt;/defaultTab&gt;&#10;    &lt;description&gt;&lt;/description&gt;&#10;    &lt;executionEnabled&gt;true&lt;/executionEnabled&gt;&#10;    &lt;loglevel&gt;INFO&lt;/loglevel&gt;&#10;    &lt;name&gt;Job&lt;/name&gt;&#10;    &lt;nodeFilterEditable&gt;false&lt;/nodeFilterEditable&gt;&#10;    &lt;scheduleEnabled&gt;true&lt;/scheduleEnabled&gt;&#10;    &lt;sequence keepgoing=&apos;false&apos; strategy=&apos;node-first&apos;&gt;&#10;      &lt;command&gt;&#10;        &lt;exec&gt;echo "$(echo -e &apos;\u0024&apos;)"{job.project}&lt;/exec&gt;&#10;      &lt;/command&gt;&#10;    &lt;/sequence&gt;&#10;  &lt;/job&gt;&#10;&lt;/joblist&gt;" &gt; job.xml' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <description>Create Projects, Jobs, Assign ACLs and Create Users</description>
+        <node-step-plugin type='nixy-local-node-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;RD_URL="http://$RD_NODE_HOSTNAME:4440"&#10;RD_TOKEN="$RD_OPTION_RD_TOKEN"&#10;RD_APIVERSION="$RD_OPTION_RD_APIVERSION"&#10;initialNumber="$RD_OPTION_INITIALNUMBER"&#10;projectNumber="$RD_OPTION_PROJECTNUMBER"&#10;max="$(($initialNumber + $projectNumber))"&#10;i="$initialNumber"&#10;&#10;while [ "$i" -lt "$max" ]; do&#10;    curl -s -X "POST" -H "Content-Type: application/json" -H "X-Rundeck-Auth-Token: $RD_TOKEN" "$RD_URL"/api/"$RD_APIVERSION"/projects -d "{ name: project-$i }"&#10;    &#10;    curl -s -X "POST" -H "Content-Type: application/xml" -H "X-Rundeck-Auth-Token: $RD_TOKEN" -T job.xml "$RD_URL"/api/"$RD_APIVERSION"/project/"project-$i"/jobs/import&#10;    &#10;    sed &apos;s/edit_this_variable/&apos;project-$i&apos;/g&apos; project.aclpolicy &gt; "project-$i".aclpolicy&#10;    &#10;    curl -s -X "POST" -H "Content-Type: text/plain" -H "X-Rundeck-Auth-Token: $RD_TOKEN" -T "project-$i".aclpolicy "$RD_URL"/api/"$RD_APIVERSION"/system/acl/"project-$i".aclpolicy&#10;    &#10;    echo "user$i:user,project-$i" &gt;&gt; realm.properties&#10;    &#10;    let i=i+1&#10;done&#10;&#10;rm -f job.xml&#10;rm -f project*.aclpolicy&#10;rm -f global*.aclpolicy' />
+          </configuration>
+        </node-step-plugin>
+        <plugins>
+          <LogFilter type='quiet-output'>
+            <config>
+              <loglevel>verbose</loglevel>
+              <matchLoglevel>all</matchLoglevel>
+              <quietMatch>true</quietMatch>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <description>Sync local realm.properties to remote node</description>
+        <node-step-plugin type='copyfile'>
+          <configuration>
+            <entry key='destinationPath' value='realm.properties' />
+            <entry key='echo' value='true' />
+            <entry key='recursive' value='false' />
+            <entry key='sourcePath' value='realm.properties' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <description>Create backup realm.properties</description>
+        <exec>rsync -a /etc/rundeck/realm.properties /etc/rundeck/realm.properties.bak</exec>
+      </command>
+      <command>
+        <description>Update realm.properties</description>
+        <exec>cat realm.properties &gt;&gt; /etc/rundeck/realm.properties</exec>
+      </command>
+      <command>
+        <description>Destroy temporal realm.properties</description>
+        <exec>rm -f realm.properties</exec>
+      </command>
+      <command>
+        <description>Destroy temporal realm.properties</description>
+        <node-step-plugin type='localexec'>
+          <configuration>
+            <entry key='command' value='rm -f realm.properties' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+    </sequence>
+    <uuid>06417235-ea6b-47b0-b0e5-7a7d380020cb</uuid>
+  </job>
+</joblist>

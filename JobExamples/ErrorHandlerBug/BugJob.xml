@@ -1,0 +1,27 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>ErrorHandlerBug</group>
+    <id>a3270aae-9c11-4ca3-9e01-1dc706fafc97</id>
+    <loglevel>INFO</loglevel>
+    <name>BugJob</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='true' strategy='node-first'>
+      <command>
+        <errorhandler>
+          <exec>echo ErrorHandler</exec>
+        </errorhandler>
+        <exec>exit 1</exec>
+      </command>
+      <command>
+        <exec>echo Running Step 2</exec>
+      </command>
+    </sequence>
+    <uuid>a3270aae-9c11-4ca3-9e01-1dc706fafc97</uuid>
+  </job>
+</joblist>

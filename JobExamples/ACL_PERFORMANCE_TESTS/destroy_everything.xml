@@ -1,0 +1,59 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='RD_TOKEN' value='Xpra9Q2TwauYNehRALv03ZNOCMB20edP' />
+        <option name='RD_APIVERSION' value='33' />
+      </options>
+    </context>
+    <defaultTab>output</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>ACL_PERFORMANCE_TESTS</group>
+    <id>03f9d2d3-f967-408e-b250-5a1f4c8d3e2f</id>
+    <loglevel>INFO</loglevel>
+    <name>destroy_everything</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: node02.rundeck.local</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Destroy Global ACLs</description>
+        <node-step-plugin type='nixy-local-node-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;RD_URL="http://$RD_NODE_HOSTNAME:4440"&#10;RD_TOKEN="$RD_OPTION_RD_TOKEN"&#10;RD_APIVERSION="$RD_OPTION_RD_APIVERSION"&#10;&#10;for aclName in $(curl -s -X "GET" -H "Content-Type: application/xml" -H "Accept: application/xml" -H "X-Rundeck-Auth-Token: $RD_TOKEN" "$RD_URL"/api/"$RD_APIVERSION"/system/acl/ | sed &apos;s/name=/\nname=/g&apos; | sed -r &apos;s/.*name=&apos;"&apos;"&apos;(.*)&apos;"&apos;"&apos;\/&gt;.*/\1/g&apos; | sed &apos;s/&lt;resource.*//g&apos; | sed -r &apos;/^\s*$/d&apos;); do&#10;&#10;curl -s -X "DELETE" -H "X-Rundeck-Auth-Token: $RD_TOKEN" "$RD_URL"/api/"$RD_APIVERSION"/system/acl/"$aclName"&#10;&#10;done' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <description>Destroy Projects</description>
+        <node-step-plugin type='nixy-local-node-step'>
+          <configuration>
+            <entry key='script' value='#!/bin/bash&#10;&#10;RD_URL="http://$RD_NODE_HOSTNAME:4440"&#10;RD_TOKEN="$RD_OPTION_RD_TOKEN"&#10;RD_APIVERSION="$RD_OPTION_RD_APIVERSION"&#10;&#10;for projectName in $(curl -s -X "GET" -H "Content-Type: application/xml" -H "X-Rundeck-Auth-Token: $RD_TOKEN" "$RD_URL"/api/"$RD_APIVERSION"/projects | grep "name&gt;project-" | sed -r &apos;s/.*&lt;name&gt;(.*)&lt;\/name&gt;.*/\1/g&apos;); do&#10;&#10;curl -s -X "DELETE" -H "X-Rundeck-Auth-Token: $RD_TOKEN" "$RD_URL"/api/"$RD_APIVERSION"/project/"$projectName"&#10;&#10;done' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <description>Restore default realm.properties</description>
+        <exec>cp /etc/rundeck/realm.properties.bak /etc/rundeck/realm.properties</exec>
+      </command>
+      <command>
+        <description>Destroy backup realm.properties</description>
+        <exec>rm -f /etc/rundeck/realm.properties.bak</exec>
+      </command>
+    </sequence>
+    <uuid>03f9d2d3-f967-408e-b250-5a1f4c8d3e2f</uuid>
+  </job>
+</joblist>
