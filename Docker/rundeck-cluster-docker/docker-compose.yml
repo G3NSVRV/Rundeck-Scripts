@@ -118,7 +118,7 @@ services:
         volumes:
           - db-data:/var/lib/postgresql/data        
         ports:
-          - ${DB_PORT}:${DB_PORT}
+          - ${DB_PORT}:5432
         environment:
           POSTGRES_DB: ${DB_NAME}
           POSTGRES_USER: ${DB_USER}
@@ -132,7 +132,7 @@ services:
         volumes:
           - minio-data:/data
         ports:
-          - ${MINIO_PORT}:${MINIO_PORT}
+          - ${MINIO_PORT}:9000
         environment:
           MINIO_ROOT_USER: ${MINIO_USER}
           MINIO_ROOT_PASSWORD: ${MINIO_PASS}
@@ -140,15 +140,6 @@ services:
         command: server /data
     mc:
         image: ${MC_IMAGE}
-        #build:
-        #  context: ${MC_CONTEXT}
-        #  args:
-        #    IMAGE: ${MC_IMAGE}
-        #    RD_STORAGE_ENDPOINT: ${RD_STORAGE_ENDPOINT}
-        #    RD_STORAGE_BUCKET: ${RD_STORAGE_BUCKET}
-        #    MINIO_PORT: ${MINIO_PORT}
-        #    MINIO_USER: ${MINIO_USER}
-        #    MINIO_PASS: ${MINIO_PASS}
         links:
           - minio
         depends_on:
@@ -177,3 +168,14 @@ services:
       environment:
         NGINX_HOST: ${RD_PROTOCOL}://${RD_HOST}
         NGINX_PORT: ${NGINX_PORT}
+    node_01:
+      build:
+        context: ${NODE_CONTEXT}
+        args:
+          IMAGE: ${NODE_IMAGE}
+          NODE_PASS: ${NODE_PASS}
+      links:
+        - rundeck_01
+        - rundeck_02
+      ports:
+        - ${NODE_PORT}:22
