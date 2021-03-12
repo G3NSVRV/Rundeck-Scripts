@@ -1,0 +1,13 @@
+version: '3'
+
+volumes:
+  db-data:
+
+services:
+  rundeck:
+    build:
+      context: ${RD_CONTEXT}
+      args:
+        IMAGE: ${IMAGE}
+    ports:
+      - ${RD_PORT_01}:4440
