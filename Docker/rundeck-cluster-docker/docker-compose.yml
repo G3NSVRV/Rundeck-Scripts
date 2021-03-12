@@ -5,177 +5,177 @@ volumes:
   minio-data:
 
 services:
-    rundeck_01:
-        build:
-          context: ${RD_CONTEXT}
-          args:
-            IMAGE: ${RD_IMAGE}
-        deploy:
-          resources:
-            limits:
-              memory: ${RD_MEM}
-        links:
-          - database
-          - minio
-        expose:
-          - ${RD_PORT_01}
-        environment:
-            RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOST}
-            RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOST}
-            RUNDECK_SERVER_UUID: ${RD_UUID_01}
-            RUNDECK_SERVER_FORWARDED: 'true'
-            RUNDECK_PRIMARYSERVERID: ${RD_UUID_01}
-            RUNDECK_DATABASE_DRIVER: ${RD_JDBC_DRIVER}
-            RUNDECK_DATABASE_USERNAME: ${DB_USER}
-            RUNDECK_DATABASE_PASSWORD: ${DB_PASS}
-            RUNDECK_DATABASE_URL: jdbc:${RD_JDBC_ENGINE}://database/${DB_NAME}?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-            RUNDECK_JAAS_MODULES_0: JettyCombinedLdapLoginModule
-            RUNDECK_JAAS_MODULES_1: PropertyFileLoginModule
-            RUNDECK_JAAS_LDAP_FLAG: sufficient
-            RUNDECK_JAAS_LDAP_PROVIDERURL: ${RD_LDAP_URL}
-            RUNDECK_JAAS_LDAP_BINDDN: ${RD_LDAP_USER} 
-            RUNDECK_JAAS_LDAP_BINDPASSWORD: ${RD_LDAP_PASS}
-            RUNDECK_JAAS_LDAP_AUTHENTICATIONMETHOD: simple
-            RUNDECK_JAAS_LDAP_FORCEBINDINGLOGIN: 'true'
-            RUNDECK_JAAS_LDAP_USERBASEDN: ${RD_LDAP_USER_BASE_DN}
-            RUNDECK_JAAS_LDAP_USERRDNATTRIBUTE: sAMAccountName
-            RUNDECK_JAAS_LDAP_USERIDATTRIBUTE: sAMAccountName
-            RUNDECK_JAAS_LDAP_USERPASSWORDATTRIBUTE: unicodePwd
-            RUNDECK_JAAS_LDAP_USEROBJECTCLASS: user
-            RUNDECK_JAAS_LDAP_ROLEBASEDN: ${RD_LDAP_ROLE_BASE_DN}
-            RUNDECK_JAAS_LDAP_ROLENAMEATTRIBUTE: cn
-            RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE: member
-            RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS: group
-            RUNDECK_JAAS_LDAP_CACHEDURATIONMILLIS: '300000'
-            RUNDECK_JAAS_LDAP_REPORTSTATISTICS: 'true'
-            RUNDECK_JAAS_LDAP_NESTEDGROUPS: 'true'
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_NAME: ${RD_STORAGE_PUGIN}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_BUCKET: ${RD_STORAGE_BUCKET}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_REGION: ${RD_STORAGE_REGION}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSACCESSKEYID: ${MINIO_USER}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSSECRETKEY: ${MINIO_PASS}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ENDPOINT: ${RD_STORAGE_ENDPOINT}:${MINIO_PORT}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
-    rundeck_02:
-        build:
-          context: ${RD_CONTEXT}
-          args:
-            IMAGE: ${RD_IMAGE}
-        deploy:
-          resources:
-            limits:
-              memory: ${RD_MEM}
-        links:
-          - database
-          - minio
-        expose:
-          - ${RD_PORT_01}
-        environment:
-            RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOST}
-            RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOST}
-            RUNDECK_SERVER_UUID: ${RD_UUID_02}
-            RUNDECK_SERVER_FORWARDED: 'true'
-            RUNDECK_PRIMARYSERVERID: ${RD_UUID_01}
-            RUNDECK_DATABASE_DRIVER: ${RD_JDBC_DRIVER}
-            RUNDECK_DATABASE_USERNAME: ${DB_USER}
-            RUNDECK_DATABASE_PASSWORD: ${DB_PASS}
-            RUNDECK_DATABASE_URL: jdbc:${RD_JDBC_ENGINE}://database/${DB_NAME}?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-            RUNDECK_JAAS_MODULES_0: JettyCombinedLdapLoginModule
-            RUNDECK_JAAS_MODULES_1: PropertyFileLoginModule
-            RUNDECK_JAAS_LDAP_FLAG: sufficient
-            RUNDECK_JAAS_LDAP_PROVIDERURL: ${RD_LDAP_URL}
-            RUNDECK_JAAS_LDAP_BINDDN: ${RD_LDAP_USER}
-            RUNDECK_JAAS_LDAP_BINDPASSWORD: ${RD_LDAP_PASS}
-            RUNDECK_JAAS_LDAP_AUTHENTICATIONMETHOD: simple
-            RUNDECK_JAAS_LDAP_FORCEBINDINGLOGIN: 'true'
-            RUNDECK_JAAS_LDAP_USERBASEDN: ${RD_LDAP_USER_BASE_DN}
-            RUNDECK_JAAS_LDAP_USERRDNATTRIBUTE: sAMAccountName
-            RUNDECK_JAAS_LDAP_USERIDATTRIBUTE: sAMAccountName
-            RUNDECK_JAAS_LDAP_USERPASSWORDATTRIBUTE: unicodePwd
-            RUNDECK_JAAS_LDAP_USEROBJECTCLASS: user
-            RUNDECK_JAAS_LDAP_ROLEBASEDN: ${RD_LDAP_ROLE_BASE_DN}
-            RUNDECK_JAAS_LDAP_ROLENAMEATTRIBUTE: cn
-            RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE: member
-            RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS: group
-            RUNDECK_JAAS_LDAP_CACHEDURATIONMILLIS: '300000'
-            RUNDECK_JAAS_LDAP_REPORTSTATISTICS: 'true'
-            RUNDECK_JAAS_LDAP_NESTEDGROUPS: 'true'
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_NAME: ${RD_STORAGE_PUGIN}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_BUCKET: ${RD_STORAGE_BUCKET}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_REGION: ${RD_STORAGE_REGION}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSACCESSKEYID: ${MINIO_USER}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSSECRETKEY: ${MINIO_PASS}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ENDPOINT: ${RD_STORAGE_ENDPOINT}:${MINIO_PORT}
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
-            RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
-    database:
-        image: ${DB_IMAGE}
-        deploy:
-          resources:
-            limits:
-              memory: ${DB_MEM}
-        volumes:
-          - db-data:/var/lib/postgresql/data        
-        ports:
-          - ${DB_PORT}:5432
-        environment:
-          POSTGRES_DB: ${DB_NAME}
-          POSTGRES_USER: ${DB_USER}
-          POSTGRES_PASSWORD: ${DB_PASS}
-    minio:
-        image: ${MINIO_IMAGE}
-        deploy:
-          resources:
-            limits:
-              memory: ${MINIO_MEM}
-        volumes:
-          - minio-data:/data
-        ports:
-          - ${MINIO_PORT}:9000
-        environment:
-          MINIO_ROOT_USER: ${MINIO_USER}
-          MINIO_ROOT_PASSWORD: ${MINIO_PASS}
-          MINIO_REGION_NAME: ${RD_STORAGE_REGION}
-        command: server /data
-    mc:
-        image: ${MC_IMAGE}
-        links:
-          - minio
-        depends_on:
-          - minio
-        entrypoint: >
-          /bin/bash -c "
-          mc config host add --api s3v4 minio ${RD_STORAGE_ENDPOINT}:${MINIO_PORT} ${MINIO_USER} ${MINIO_PASS};
-          mc mb minio/${RD_STORAGE_BUCKET};
-          mc policy set public minio/${RD_STORAGE_BUCKET};
-          curl -s -D - ${RD_STORAGE_ENDPOINT} | grep  X-Amz-Bucket-Region | sed 's/X-Amz-Bucket-Region/Region/g'
-          "
-    nginx:
-      build:
-        context: ${NGINX_CONTEXT}
-        args:
-          IMAGE: ${NGINX_IMAGE}
-          RD_PORT_01: ${RD_PORT_01}
-          RD_PORT_02: ${RD_PORT_02}
-          RD_PROTOCOL: ${RD_PROTOCOL}
-          RD_HOST: ${RD_HOST}
-      links:
-        - rundeck_01
-        - rundeck_02
-      ports:
-        - ${NGINX_PORT}:${NGINX_PORT}
-      environment:
-        NGINX_HOST: ${RD_PROTOCOL}://${RD_HOST}
-        NGINX_PORT: ${NGINX_PORT}
-    node_01:
-      build:
-        context: ${NODE_CONTEXT}
-        args:
-          IMAGE: ${NODE_IMAGE}
-          NODE_PASS: ${NODE_PASS}
-      links:
-        - rundeck_01
-        - rundeck_02
-      ports:
-        - ${NODE_PORT}:22
+  rundeck_01:
+    build:
+      context: ${RD_CONTEXT}
+      args:
+        IMAGE: ${RD_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${RD_MEM}
+    links:
+      - database
+      - minio
+    expose:
+      - ${RD_PORT_01}
+    environment:
+      RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOST}
+      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOST}
+      RUNDECK_SERVER_UUID: ${RD_UUID_01}
+      RUNDECK_SERVER_FORWARDED: 'true'
+      RUNDECK_PRIMARYSERVERID: ${RD_UUID_01}
+      RUNDECK_DATABASE_DRIVER: ${RD_JDBC_DRIVER}
+      RUNDECK_DATABASE_USERNAME: ${DB_USER}
+      RUNDECK_DATABASE_PASSWORD: ${DB_PASS}
+      RUNDECK_DATABASE_URL: jdbc:${RD_JDBC_ENGINE}://database/${DB_NAME}?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      RUNDECK_JAAS_MODULES_0: JettyCombinedLdapLoginModule
+      RUNDECK_JAAS_MODULES_1: PropertyFileLoginModule
+      RUNDECK_JAAS_LDAP_FLAG: sufficient
+      RUNDECK_JAAS_LDAP_PROVIDERURL: ${RD_LDAP_URL}
+      RUNDECK_JAAS_LDAP_BINDDN: ${RD_LDAP_USER} 
+      RUNDECK_JAAS_LDAP_BINDPASSWORD: ${RD_LDAP_PASS}
+      RUNDECK_JAAS_LDAP_AUTHENTICATIONMETHOD: simple
+      RUNDECK_JAAS_LDAP_FORCEBINDINGLOGIN: 'true'
+      RUNDECK_JAAS_LDAP_USERBASEDN: ${RD_LDAP_USER_BASE_DN}
+      RUNDECK_JAAS_LDAP_USERRDNATTRIBUTE: sAMAccountName
+      RUNDECK_JAAS_LDAP_USERIDATTRIBUTE: sAMAccountName
+      RUNDECK_JAAS_LDAP_USERPASSWORDATTRIBUTE: unicodePwd
+      RUNDECK_JAAS_LDAP_USEROBJECTCLASS: user
+      RUNDECK_JAAS_LDAP_ROLEBASEDN: ${RD_LDAP_ROLE_BASE_DN}
+      RUNDECK_JAAS_LDAP_ROLENAMEATTRIBUTE: cn
+      RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE: member
+      RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS: group
+      RUNDECK_JAAS_LDAP_CACHEDURATIONMILLIS: '300000'
+      RUNDECK_JAAS_LDAP_REPORTSTATISTICS: 'true'
+      RUNDECK_JAAS_LDAP_NESTEDGROUPS: 'true'
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_NAME: ${RD_STORAGE_PUGIN}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_BUCKET: ${RD_STORAGE_BUCKET}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_REGION: ${RD_STORAGE_REGION}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSACCESSKEYID: ${MINIO_USER}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSSECRETKEY: ${MINIO_PASS}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ENDPOINT: ${RD_STORAGE_ENDPOINT}:${MINIO_PORT}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
+  rundeck_02:
+    build:
+      context: ${RD_CONTEXT}
+      args:
+        IMAGE: ${RD_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${RD_MEM}
+    links:
+      - database
+      - minio
+    expose:
+      - ${RD_PORT_01}
+    environment:
+      RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOST}
+      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOST}
+      RUNDECK_SERVER_UUID: ${RD_UUID_02}
+      RUNDECK_SERVER_FORWARDED: 'true'
+      RUNDECK_PRIMARYSERVERID: ${RD_UUID_01}
+      RUNDECK_DATABASE_DRIVER: ${RD_JDBC_DRIVER}
+      RUNDECK_DATABASE_USERNAME: ${DB_USER}
+      RUNDECK_DATABASE_PASSWORD: ${DB_PASS}
+      RUNDECK_DATABASE_URL: jdbc:${RD_JDBC_ENGINE}://database/${DB_NAME}?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      RUNDECK_JAAS_MODULES_0: JettyCombinedLdapLoginModule
+      RUNDECK_JAAS_MODULES_1: PropertyFileLoginModule
+      RUNDECK_JAAS_LDAP_FLAG: sufficient
+      RUNDECK_JAAS_LDAP_PROVIDERURL: ${RD_LDAP_URL}
+      RUNDECK_JAAS_LDAP_BINDDN: ${RD_LDAP_USER}
+      RUNDECK_JAAS_LDAP_BINDPASSWORD: ${RD_LDAP_PASS}
+      RUNDECK_JAAS_LDAP_AUTHENTICATIONMETHOD: simple
+      RUNDECK_JAAS_LDAP_FORCEBINDINGLOGIN: 'true'
+      RUNDECK_JAAS_LDAP_USERBASEDN: ${RD_LDAP_USER_BASE_DN}
+      RUNDECK_JAAS_LDAP_USERRDNATTRIBUTE: sAMAccountName
+      RUNDECK_JAAS_LDAP_USERIDATTRIBUTE: sAMAccountName
+      RUNDECK_JAAS_LDAP_USERPASSWORDATTRIBUTE: unicodePwd
+      RUNDECK_JAAS_LDAP_USEROBJECTCLASS: user
+      RUNDECK_JAAS_LDAP_ROLEBASEDN: ${RD_LDAP_ROLE_BASE_DN}
+      RUNDECK_JAAS_LDAP_ROLENAMEATTRIBUTE: cn
+      RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE: member
+      RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS: group
+      RUNDECK_JAAS_LDAP_CACHEDURATIONMILLIS: '300000'
+      RUNDECK_JAAS_LDAP_REPORTSTATISTICS: 'true'
+      RUNDECK_JAAS_LDAP_NESTEDGROUPS: 'true'
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_NAME: ${RD_STORAGE_PUGIN}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_BUCKET: ${RD_STORAGE_BUCKET}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_REGION: ${RD_STORAGE_REGION}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSACCESSKEYID: ${MINIO_USER}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_AWSSECRETKEY: ${MINIO_PASS}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ENDPOINT: ${RD_STORAGE_ENDPOINT}:${MINIO_PORT}
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
+      RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
+  database:
+    image: ${DB_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${DB_MEM}
+    volumes:
+      - db-data:/var/lib/postgresql/data        
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+  minio:
+    image: ${MINIO_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${MINIO_MEM}
+    volumes:
+      - minio-data:/data
+    ports:
+      - ${MINIO_PORT}:9000
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASS}
+      MINIO_REGION_NAME: ${RD_STORAGE_REGION}
+    command: server /data
+  mc:
+    image: ${MC_IMAGE}
+    links:
+      - minio
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/bash -c "
+      mc config host add --api s3v4 minio ${RD_STORAGE_ENDPOINT}:${MINIO_PORT} ${MINIO_USER} ${MINIO_PASS};
+      mc mb minio/${RD_STORAGE_BUCKET};
+      mc policy set public minio/${RD_STORAGE_BUCKET};
+      curl -s -D - ${RD_STORAGE_ENDPOINT} | grep  X-Amz-Bucket-Region | sed 's/X-Amz-Bucket-Region/Region/g'
+      "
+  nginx:
+    build:
+      context: ${NGINX_CONTEXT}
+      args:
+        IMAGE: ${NGINX_IMAGE}
+        RD_PORT_01: ${RD_PORT_01}
+        RD_PORT_02: ${RD_PORT_02}
+        RD_PROTOCOL: ${RD_PROTOCOL}
+        RD_HOST: ${RD_HOST}
+    links:
+      - rundeck_01
+      - rundeck_02
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    environment:
+      NGINX_HOST: ${RD_PROTOCOL}://${RD_HOST}
+      NGINX_PORT: ${NGINX_PORT}
+  node_01:
+    build:
+      context: ${NODE_CONTEXT}
+      args:
+        IMAGE: ${NODE_IMAGE}
+        NODE_PASS: ${NODE_PASS}
+    links:
+      - rundeck_01
+      - rundeck_02
+    ports:
+      - ${NODE_PORT}:22
