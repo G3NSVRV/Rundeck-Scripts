@@ -9,7 +9,8 @@ RUN apk add openssh
 
 RUN getent group rundeck || addgroup rundeck
 RUN getent passwd rundeckuser || adduser rundeckuser -h /home/rundeck -s /bin/sh -G rundeck -D
-RUN echo -e "${NODE_PASS}\n${NODE_PASS}" | passwd rundeckuser
+RUN passwd -d rundeckuser
+RUN echo -e "rundeckpassword\nrundeckpassword" | passwd rundeckuser > /output
 
 RUN echo "UseDNS no" > /etc/ssh/sshd_config
 RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
@@ -22,4 +23,4 @@ RUN echo "Subsystem	sftp /usr/lib/ssh/sftp-server" >> /etc/ssh/sshd_config
 
 RUN ssh-keygen -A
 
-CMD cat /etc/ssh/sshd_config && /usr/sbin/sshd -f /etc/ssh/sshd_config -D
+CMD cat /output && cat /etc/ssh/sshd_config && /usr/sbin/sshd -f /etc/ssh/sshd_config -D
