@@ -18,6 +18,10 @@ services:
       context: ${DB_CONTEXT}
       args:
         IMAGE: ${DB_IMAGE}
+        DB_HOSTNAME: ${DB_HOSTNAME}
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
     environment:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
