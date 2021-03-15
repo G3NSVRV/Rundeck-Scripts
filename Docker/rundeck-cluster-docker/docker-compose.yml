@@ -6,6 +6,7 @@ volumes:
 
 services:
   rundeck_01:
+    hostname: 'rundeck_01'
     build:
       context: ${RD_CONTEXT}
       args:
@@ -58,6 +59,7 @@ services:
       RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
       RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
   rundeck_02:
+    hostname: 'rundeck_02'
     build:
       context: ${RD_CONTEXT}
       args:
@@ -110,6 +112,7 @@ services:
       RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_PATHSTYLE: 'true'
       RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_ALLOWDELETE0: 'true'
   database:
+    hostname: ${RD_JDBC_ENGINE}
     image: ${DB_IMAGE}
     deploy:
       resources:
@@ -124,6 +127,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
   minio:
+    hostname: 'minio'
     image: ${MINIO_IMAGE}
     deploy:
       resources:
@@ -152,6 +156,7 @@ services:
       curl -s -D - ${RD_STORAGE_ENDPOINT} | grep  X-Amz-Bucket-Region | sed 's/X-Amz-Bucket-Region/Region/g'
       "
   nginx:
+    hostname: ${RD_HOST}
     build:
       context: ${NGINX_CONTEXT}
       args:
@@ -169,6 +174,7 @@ services:
       NGINX_HOST: ${RD_PROTOCOL}://${RD_HOST}
       NGINX_PORT: ${NGINX_PORT}
   node_01:
+    hostname: 'node_01'
     build:
       context: ${NODE_CONTEXT}
       args:
