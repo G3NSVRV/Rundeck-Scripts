@@ -17,9 +17,16 @@ RUN echo -e "rundeckpassword\nrundeckpassword" | passwd rundeckuser > /output
 USER rundeckuser
 COPY --chown=rundeckuser:rundeck rundeck.war /home/rundeckuser
 RUN java -jar /home/rundeckuser/rundeck.war --installonly
-RUN sed "s/^dataSource.url.*/dataSource.url=jdbc:mysql:\/\/${DB_HOSTNAME}\/${DB_NAME}?autoReconnect=true&useSSL=false/g" /home/rundeckuser/server/config/rundeck-config.properties
+RUN sed -i 's/^dataSource.url.*$//g' /home/rundeckuser/server/config/rundeck-config.properties
+RUN sed -i 's/^server.address.*//g' /home/rundeckuser/server/config/rundeck-config.properties
+RUN sed -i 's/^rundeck.storage.converter.1.*//g' /home/rundeckuser/server/config/rundeck-config.properties
+RUN sed -i 's/^rundeck.storage.provider.1.*//g' /home/rundeckuser/server/config/rundeck-config.properties
+RUN sed -i 's/^rundeck.config.storage.converter.1.*//g' /home/rundeckuser/server/config/rundeck-config.properties
+RUN echo "dataSource.url=jdbc:mysql://${DB_HOSTNAME}/${DB_NAME}?autoReconnect=true&useSSL=false" >> /home/rundeckuser/server/config/rundeck-config.properties
 RUN echo "dataSource.username=${DB_USER}" >> /home/rundeckuser/server/config/rundeck-config.properties
 RUN echo "dataSource.password=${DB_PASS}" >> /home/rundeckuser/server/config/rundeck-config.properties
 RUN echo "dataSource.driverClassName=org.mariadb.jdbc.Driver" >> /home/rundeckuser/server/config/rundeck-config.properties
+RUN echo "rundeck.storage.provider.type=db" >> /home/rundeckuser/server/config/rundeck-config.properties
+RUN echo "rundeck.storage.provider.path=keys" >> /home/rundeckuser/server/config/rundeck-config.properties
 
-CMD java -jar /home/rundeckuser/rundeck.war
+CMD /bin/bash -c "sleep 45" && java -jar /home/rundeckuser/rundeck.war

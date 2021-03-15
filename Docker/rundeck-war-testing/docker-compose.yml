@@ -10,18 +10,22 @@ services:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${IMAGE}
+        DB_HOSTNAME: ${DB_HOSTNAME}
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
     ports:
       - ${RD_PORT}:4440
+    links:
+      - database
+    depends_on:
+      - database
   database:
     hostname: ${DB_HOSTNAME}
     build:
       context: ${DB_CONTEXT}
       args:
         IMAGE: ${DB_IMAGE}
-        DB_HOSTNAME: ${DB_HOSTNAME}
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
     environment:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
