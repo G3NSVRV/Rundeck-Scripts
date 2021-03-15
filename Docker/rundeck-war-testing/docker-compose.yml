@@ -14,6 +14,7 @@ services:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
+        RD_PASSWORD: ${RD_PASSWORD}
     ports:
       - ${RD_PORT}:4440
     links:
