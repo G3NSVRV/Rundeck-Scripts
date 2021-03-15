@@ -1,17 +1,15 @@
 ARG IMAGE
 FROM ${IMAGE}
 
-RUN apt update
-RUN apt upgrade -y
-RUN apt install openjdk-8-jre-headless -y
+RUN yum update -y
+RUN yum install java-1.8.0-openjdk-headless -y
 
-RUN getent group rundeck || addgroup rundeck
-RUN getent passwd rundeckuser || adduser rundeckuser -h /home/rundeck -s /bin/sh -G rundeck -D
+RUN getent group rundeck || groupadd rundeck
+RUN getent passwd rundeckuser || adduser rundeckuser -m -s /bin/sh -g rundeck
 RUN passwd -d rundeckuser
 RUN echo -e "rundeckpassword\nrundeckpassword" | passwd rundeckuser > /output
 
-COPY rundeck.war /home/rundeck
+COPY rundeck.war /home/rundeckuser
+USER rundeckuser
 
-USER rundeck
-
-CMD java -jar /home/rundeck/rundeck.war
+CMD java -jar /home/rundeckuser/rundeck.war

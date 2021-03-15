@@ -5,10 +5,23 @@ volumes:
 
 services:
   rundeck:
-    hostname: 'rundeck'
+    hostname: ${RD_HOSTNAME}
     build:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${IMAGE}
     ports:
       - ${RD_PORT}:4440
+  database:
+    hostname: ${DB_HOSTNAME}
+    build:
+      context: ${DB_CONTEXT}
+      args:
+        IMAGE: ${DB_IMAGE}
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+    ports:
+      - ${DB_PORT}:3306
