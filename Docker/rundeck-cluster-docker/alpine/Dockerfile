@@ -1,7 +1,7 @@
 ARG IMAGE
-ARG NODE_PASS
-
 FROM ${IMAGE}
+
+ARG NODE_PASS
 
 RUN apk update
 RUN apk upgrade
@@ -9,8 +9,7 @@ RUN apk add openssh
 
 RUN getent group rundeck || addgroup rundeck
 RUN getent passwd rundeckuser || adduser rundeckuser -h /home/rundeck -s /bin/sh -G rundeck -D
-RUN passwd -d rundeckuser
-RUN echo -e "rundeckpassword\nrundeckpassword" | passwd rundeckuser > /output
+RUN echo -e "${NODE_PASS}\n${NODE_PASS}" | passwd rundeckuser > /output
 
 RUN echo "UseDNS no" > /etc/ssh/sshd_config
 RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
