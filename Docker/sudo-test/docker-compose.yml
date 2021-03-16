@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  dummy:
+    hostname: '${NODE_HOSTNAME}'
+    build:
+      context: ${NODE_CONTEXT}
+      args:
+        IMAGE: ${NODE_IMAGE}
+        NODE_PASS: ${NODE_PASS}
+    ports:
+      - ${NODE_PORT}:22
+    links:
+      - rundeck
+    depends_on:
+      - rundeck
+  rundeck:
+    hostname: '${RD_HOSTNAME}'
+    build:
+      context: ${RD_CONTEXT}
+      args:
+        IMAGE: ${RD_IMAGE}
+    ports:
+      - ${RD_PORT}:4440
