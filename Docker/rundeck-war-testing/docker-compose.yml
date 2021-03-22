@@ -1,8 +1,5 @@
 version: '3'
 
-volumes:
-  db-data:
-
 services:
   rundeck:
     hostname: ${RD_HOSTNAME}
