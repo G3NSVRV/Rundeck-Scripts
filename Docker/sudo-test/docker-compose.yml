@@ -2,7 +2,7 @@ version: '3'
 
 services:
   dummy:
-    hostname: '${NODE_HOSTNAME}'
+    hostname: ${NODE_HOSTNAME}
     build:
       context: ${NODE_CONTEXT}
       args:
@@ -15,10 +15,13 @@ services:
     depends_on:
       - rundeck
   rundeck:
-    hostname: '${RD_HOSTNAME}'
+    hostname: ${RD_HOSTNAME}
     build:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${RD_IMAGE}
     ports:
       - ${RD_PORT}:4440
+    environment:
+      RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
+      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
