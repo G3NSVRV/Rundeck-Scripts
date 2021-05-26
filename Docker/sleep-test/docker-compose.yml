@@ -1,0 +1,8 @@
+version: '3'
+
+services: 
+  alpine:
+    build:
+      context: ${ALPINE_CONTEXT}
+      args:
+        IMAGE: ${ALPINE_IMAGE}
