@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#############################################
+echo "This Script queries failed jobs on N hours, days, etc (please see docs recentFilter)."
+echo "Please fill the following:"
+#############################################
+echo "\nRundeck Server URL:(e.g. http://rundeck.local:4440)"; read -r rundeckServer
+echo "\nRundeck User:"; read -r rundeckUser
+echo "\nRundeck Pass:"; read -r rundeckPass
+echo "\nRundeck Project:"; read -r projectName
+echo "\nHow much time do you want to filter?:"; read -r timeFilter
+#############################################
+# to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
+#############################################
+#rundeckServer=http://node01-linux.local:4440
+#rundeckUser=admin
+#rundeckPass=admin
+#projectName=IssuesTesting
+#timeFilter=1h
+#############################################
+apiVersion=23
+outputFormat=json
+cookie=cookie
+
+curl -s -X "POST" -d "j_username=$rundeckUser" -d "j_password=$rundeckPass" -c cookie -b cookie "$rundeckServer"/j_security_check
+
+curl -s -X "GET" -b "$cookie" -c "$cookie" -H "Accept: application/$outputFormat" -H "Content-Type: application/$outputFormat" "$rundeckServer/api/$apiVersion/project/$projectName/executions?statusFilter=failed&recentFilter=$timeFilter" | jq .
