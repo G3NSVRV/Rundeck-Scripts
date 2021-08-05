@@ -1,5 +1,3 @@
 .DS_Store
 Docker/rundeck-war-testing/mysql/dump.sql.gz
-Docker/rundeck-war-testing/rundeck/rundeck-3.3.5.war
-Docker/rundeck-war-testing/rundeck/rundeck-3.3.9.war
 Docker/rundeck-war-testing/rundeck/rundeck.war
