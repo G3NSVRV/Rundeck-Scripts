@@ -18,6 +18,10 @@ services:
       - database
     depends_on:
       - database
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
   database:
     hostname: ${DB_HOSTNAME}
     build:

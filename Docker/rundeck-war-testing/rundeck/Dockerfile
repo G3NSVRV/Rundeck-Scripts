@@ -8,7 +8,7 @@ ARG DB_PASS
 ARG RD_PASSWORD
 
 RUN yum update -y
-RUN yum install java-1.8.0-openjdk-headless -y
+RUN yum install -y java-1.8.0-openjdk-headless strace
 
 RUN getent group rundeck || groupadd rundeck
 RUN getent passwd rundeckuser || adduser rundeckuser -m -s /bin/sh -g rundeck
