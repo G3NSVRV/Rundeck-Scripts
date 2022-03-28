@@ -21,6 +21,7 @@ services:
     expose:
       - ${RD_PORT_01}
     environment:
+      JVM_MAX_RAM_PERCENTAGE: ${RD_JVM_MAX}
       RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_SERVER_UUID: ${RD_UUID_01}
@@ -76,6 +77,7 @@ services:
     expose:
       - ${RD_PORT_01}
     environment:
+      JVM_MAX_RAM_PERCENTAGE: ${RD_JVM_MAX}
       RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_SERVER_UUID: ${RD_UUID_02}
@@ -131,6 +133,7 @@ services:
     expose:
       - ${RD_PORT_01}
     environment:
+      JVM_MAX_RAM_PERCENTAGE: ${RD_JVM_MAX}
       RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_SERVER_UUID: ${RD_UUID_03}
@@ -186,6 +189,7 @@ services:
     expose:
       - ${RD_PORT_01}
     environment:
+      JVM_MAX_RAM_PERCENTAGE: ${RD_JVM_MAX}
       RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
       RUNDECK_SERVER_UUID: ${RD_UUID_04}
