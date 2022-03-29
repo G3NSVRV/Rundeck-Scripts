@@ -1,0 +1,25 @@
+#!/bin/bash
+#############################################
+#echo "Rundeck Server Endpoint:"; read -r rundeckServer
+#echo -e "\nRundeck Username:"; read -r rundeckUser
+#echo -e "\nRundeck Password:"; read -r rundeckPass
+#############################################
+# to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
+#############################################
+rundeckServer="http://node01-linux.local:4440"
+rundeckUser="admin"
+rundeckPass="admin"
+#############################################
+# Options Variables
+#############################################
+rundeckApiversion="29"
+rundeckApiformat="json"
+jobFormat="yaml"
+curlOptions="-s"
+#############################################
+
+curl -s -X "POST" -d "j_username=$rundeckUser" -d "j_password=$rundeckPass" -c cookie -b cookie "$rundeckServer"/j_security_check
+
+curl -s -X "GET" -H "Accept: application/$rundeckApiformat" -H "Content-Type: application/$rundeckApiformat" -b cookie "$rundeckServer"/api/"$rundeckApiversion"/project/POC-00078529/executions?recentFilter=19d | jq '.executions[].successfulNodes'
+
+rm -f cookie
