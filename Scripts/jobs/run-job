@@ -1,0 +1,13 @@
+#!/bin/bash
+
+rundeckServer="http://node01-linux.local:4440"
+rundeckUser="admin"
+rundeckPass="admin"
+#jobUUID="a5bad356-d6eb-465d-aaaa-88af927ce386"
+jobUUID="$1"
+
+curl -s -X "POST" -d "j_username=$rundeckUser" -d "j_password=$rundeckPass" -c cookie -b cookie "$rundeckServer"/j_security_check
+
+curl -s -X "POST" --header "Content-Type: application/json" --header "Accept: application/json" -b cookie "$rundeckServer"/api/39/job/"$jobUUID"/run | jq .
+
+rm -f cookie
