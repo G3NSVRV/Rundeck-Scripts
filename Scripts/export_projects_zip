@@ -21,6 +21,11 @@ options="$options&exportAcls=true"
 options="$options&exportScm=true"
 options="$options&exportWebhooks=true"
 options="$options&whkIncludeAuthTokens=true"
+#### 4.4.0 snapshot
+options="$options&exportComponents.calendars=true"
+options="$options&exportComponents.Schedule%20Definitions=true"
+options="$options&exportComponents.tours-manager=true"
+options="$options&exportComponents.node-wizard=true"
 #############################################
 echo "Downloading data..."
 mkdir -p exported_projects
