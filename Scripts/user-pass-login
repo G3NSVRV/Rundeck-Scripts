@@ -1,7 +1,0 @@
-#!/bin/bash
-
-rundeckServer="http://node01-linux.local:4440"
-rundeckUser="admin"
-rundeckPass="admin"
-
-curl -v -X "POST" -d "j_username=$rundeckUser" -d "j_password=$rundeckPass" -c cookie -b cookie "$rundeckServer"/j_security_check
