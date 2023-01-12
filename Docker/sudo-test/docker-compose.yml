@@ -24,4 +24,4 @@ services:
       - ${RD_PORT}:4440
     environment:
       RUNDECK_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
-      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
+      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}:${RD_PORT}
