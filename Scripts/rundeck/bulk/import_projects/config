@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+curlOpt="-s"
+cookie="cookie"
+rundeckServer="http://localhost:4440"
+rundeckApiToken="XXXXXXXXX"
+rundeckApiVersion="38"
+rundeckApiFormat="application/json"
+rundeckJobFormat="application/yaml"
+projectPrefix="prefix"
+amountProjects='10'
+amountJobs='100'

@@ -1,0 +1,30 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  loglevel: INFO
+  name: JobXXXX
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: {}
+  schedule:
+    dayofmonth:
+      day: '*'
+    month: '*'
+    time:
+      hour: '*'
+      minute: YYYY/5
+      seconds: '0'
+    year: '*'
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - exec: hostname
+    - configuration:
+        cycles: '5'
+        interval: 1m
+        progress: 'true'
+      nodeStep: true
+      type: nixy-waitfor-sleep-workflow-node-step
+    keepgoing: false
+    strategy: node-first

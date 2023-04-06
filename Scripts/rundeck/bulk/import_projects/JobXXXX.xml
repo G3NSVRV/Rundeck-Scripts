@@ -1,0 +1,33 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <loglevel>INFO</loglevel>
+    <name>JobXXXX</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <schedule>
+      <dayofmonth />
+      <month day='*' month='*' />
+      <time hour='*' minute='YYYY/5' seconds='0' />
+      <year year='*' />
+    </schedule>
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>hostname</exec>
+      </command>
+      <command>
+        <node-step-plugin type='nixy-waitfor-sleep-workflow-node-step'>
+          <configuration>
+            <entry key='cycles' value='5' />
+            <entry key='interval' value='1m' />
+            <entry key='progress' value='true' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+    </sequence>
+  </job>
+</joblist>
