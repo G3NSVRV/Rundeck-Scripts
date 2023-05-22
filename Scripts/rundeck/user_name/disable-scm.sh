@@ -17,14 +17,15 @@ cookie="cookie"
 #############################################
 rundeckApiVersion="34"
 rundeckApiFormat="json"
+rundeckProjectFormat="json"
 #############################################
 
 curl "$curlOptions" -X "POST" -d "j_username=$rundeckUser" -d "j_password=$rundeckPass" -c "$cookie" "$rundeckServer"/j_security_check
 
-for projectName in $(curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
+for projectName in $(curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -c "$cookie" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/projects|sed 's/,/\n/g'| grep name | cut -d ":" -f2 | tr -d '"')
 do
-curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckProjectFormat" -H "Content-Type: application/$rundeckProjectFormat" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/scm/import/plugins
-curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckProjectFormat" -H "Content-Type: application/$rundeckProjectFormat" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/scm/export/plugins
+curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckProjectFormat" -H "Content-Type: application/$rundeckProjectFormat" -c "$cookie" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/scm/import/plugins
+curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckProjectFormat" -H "Content-Type: application/$rundeckProjectFormat" -c "$cookie" -b "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/scm/export/plugins
 done
 
 rm -f "$cookie"
