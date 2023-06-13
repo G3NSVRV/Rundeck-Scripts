@@ -100,8 +100,6 @@ services:
     links:
       - rundeck_01
       - rundeck_02
-      - rundeck_03
-      - rundeck_04
     ports:
       - ${NGINX_PORT}:${NGINX_PORT}
     environment:
@@ -117,7 +115,5 @@ services:
     links:
       - rundeck_01
       - rundeck_02
-      - rundeck_03
-      - rundeck_04
     ports:
       - ${NODE_PORT}:22
