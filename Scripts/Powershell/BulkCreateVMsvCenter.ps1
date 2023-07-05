@@ -1,4 +1,9 @@
-﻿#
+﻿# Disable couple of shenaningans
+# Disable it manually before to run this script
+# 
+# Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false
+# Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+#
 # PowerCLI to create VMs from existing vSphere VM
 # Version 1.0
 # Magnus Andersson RTS
