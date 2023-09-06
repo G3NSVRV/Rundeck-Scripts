@@ -1,14 +1,17 @@
 ## grails.serverURL
-RD_PORT=4440
-PUBLIC_DNS=$(nslookup $(curl -s ipinfo.io/ip)|grep name|cut -d '=' -f2|sed 's/^\s\(.*\).$/\1/g')
-GRAILS_URL=http://$PUBLIC_DNS:$RD_PORT
+#RD_PORT=4440
+#PUBLIC_DNS=$(nslookup $(curl -s ipinfo.io/ip)|grep name|cut -d '=' -f2|sed 's/^\s\(.*\).$/\1/g')
+#GRAILS_URL=http://$PUBLIC_DNS:$RD_PORT
 
 ## framework hostname
-#framework.server.name = localhost
-#framework.server.hostname = localhost
-#framework.server.port = 4440
-#framework.server.url = http://localhost:4440
 
-sed -i 's/localhost/'$HOSTNAME'/g' /etc/rundeck/framework.properties
+sleep 30
 
-RDECK_JVM_SETTINGS="$RDECK_JVM_SETTINGS -Xmx4096m -Xms1024m -Dgrails.serverURL=$GRAILS_URL"
+HOSTNAME=$(hostname)
+UUID=$(uuidgen)
+
+sed -i 's/ip-xxx-xxx-xxx-xxx.us-east-1.compute.internal/'$HOSTNAME'/g' /etc/rundeck/framework.properties
+sed -i 's/d866679d-a7e2-4988-af21-80af37e65109/'$UUID'/g' /etc/rundeck/framework.properties
+
+RDECK_JVM_SETTINGS="$RDECK_JVM_SETTINGS -Xmx4096m -Xms1024m"
+# -Dgrails.serverURL=$GRAILS_URL"
