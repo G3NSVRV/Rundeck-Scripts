@@ -1,3 +1,4 @@
 .DS_Store
 dump.sql.gz*
 rundeck.war
+.env
