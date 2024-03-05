@@ -22,7 +22,7 @@ services:
     expose:
       - ${RD_PORT_01}
     env_file:
-      - rundeck/environment.file
+      - rundeck/environment.properties
     environment:
       RUNDECK_SERVER_UUID: ${RD_UUID_01}
   rundeck_02:
@@ -42,7 +42,7 @@ services:
     expose:
       - ${RD_PORT_01}
     env_file:
-      - rundeck/environment.file
+      - rundeck/environment.properties
     environment:
       RUNDECK_SERVER_UUID: ${RD_UUID_02}
   database:
