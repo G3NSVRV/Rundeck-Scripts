@@ -53,13 +53,11 @@ services:
         limits:
           memory: ${DB_MEM}
     volumes:
-      - db-data:/var/lib/postgresql/data        
+      - db-data:${DB_PATH}
     ports:
       - ${DB_PORT}:5432
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
+    env_file:
+      - ${DB_ENV}
   minio:
     hostname: 'minio'
     image: ${MINIO_IMAGE}
