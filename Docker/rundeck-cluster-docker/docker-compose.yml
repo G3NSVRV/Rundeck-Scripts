@@ -6,7 +6,7 @@ volumes:
 
 services:
   rundeck_01:
-    hostname: ${RD_HOSTNAME}
+    hostname: ${RD_UUID_01}
     build:
       context: ${RD_CONTEXT}
       args:
@@ -26,7 +26,7 @@ services:
     environment:
       RUNDECK_SERVER_UUID: ${RD_UUID_01}
   rundeck_02:
-    hostname: ${RD_HOSTNAME}
+    hostname: ${RD_UUID_02}
     build:
       context: ${RD_CONTEXT}
       args:
@@ -59,7 +59,7 @@ services:
     env_file:
       - ${DB_ENV}
   minio:
-    hostname: 'minio'
+    hostname: minio
     image: ${MINIO_IMAGE}
     deploy:
       resources:
@@ -89,25 +89,24 @@ services:
       curl -s -D - ${RD_STORAGE_ENDPOINT} | grep  X-Amz-Bucket-Region | sed 's/X-Amz-Bucket-Region/Region/g'
       "
   nginx:
-    hostname: ${RD_HOSTNAME}
+    hostname: rundeck
     build:
       context: ${NGINX_CONTEXT}
       args:
         IMAGE: ${NGINX_IMAGE}
         RD_PORT_01: ${RD_PORT_01}
         RD_PORT_02: ${RD_PORT_02}
-        RD_PROTOCOL: ${RD_PROTOCOL}
-        RD_HOSTNAME: ${RD_HOSTNAME}
+        RD_URL: ${RD_URL}
     links:
       - rundeck_01
       - rundeck_02
     ports:
       - ${NGINX_PORT}:${NGINX_PORT}
     environment:
-      NGINX_HOSTNAME: ${RD_PROTOCOL}://${RD_HOSTNAME}
+      NGINX_HOSTNAME: ${RD_URL}
       NGINX_PORT: ${NGINX_PORT}
   node_01:
-    hostname: 'node_01'
+    hostname: node_01
     build:
       context: ${NODE_CONTEXT}
       args:
