@@ -46,7 +46,7 @@ services:
     environment:
       RUNDECK_SERVER_UUID: ${RD_UUID_02}
   database:
-    hostname: ${RD_JDBC_ENGINE}
+    hostname: database
     image: ${DB_IMAGE}
     deploy:
       resources:
