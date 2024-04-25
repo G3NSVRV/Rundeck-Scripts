@@ -2,16 +2,18 @@ version: '3'
 
 services:
   rundeck:
-    hostname: ${RD_HOSTNAME}
+    hostname: rundeck
     build:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${IMAGE}
+        RD_PASSWORD: ${RD_PASSWORD}
         DB_HOSTNAME: ${DB_HOSTNAME}
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
-        RD_PASSWORD: ${RD_PASSWORD}
+        DB_JDBC_URL: ${DB_JDBC_URL}
+        DB_JDBC_DRIVER: ${DB_JDBC_DRIVER}
     ports:
       - ${RD_PORT}:4440
     links:
@@ -23,7 +25,7 @@ services:
     security_opt:
       - seccomp:unconfined
   database:
-    hostname: ${DB_HOSTNAME}
+    hostname: database
     build:
       context: ${DB_CONTEXT}
       args:
