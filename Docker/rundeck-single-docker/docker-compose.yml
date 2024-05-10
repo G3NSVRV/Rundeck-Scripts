@@ -1,0 +1,38 @@
+version: '3'
+
+volumes:
+  db-data:
+
+services:
+  rundeck_01:
+    hostname: ${RD_UUID_01}
+    build:
+      context: ${RD_CONTEXT}
+      args:
+        IMAGE: ${RD_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${RD_MEM}
+    platform: linux/amd64
+    links:
+      - database
+    ports:
+      - 80:${RD_PORT_01}
+    env_file:
+      - rundeck/environment.properties
+    environment:
+      RUNDECK_SERVER_UUID: ${RD_UUID_01}
+  database:
+    hostname: database
+    image: ${DB_IMAGE}
+    deploy:
+      resources:
+        limits:
+          memory: ${DB_MEM}
+    volumes:
+      - db-data:${DB_PATH}
+    ports:
+      - ${DB_PORT}:5432
+    env_file:
+      - ${DB_ENV}
