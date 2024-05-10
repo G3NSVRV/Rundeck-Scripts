@@ -1,7 +1,7 @@
 version: "3"
 services:
   rundeck:
-    hostname: ${RD_HOSTNAME}
+    hostname: rundeck
     build:
       context: ${RD_CONTEXT}
       args:
@@ -14,8 +14,9 @@ services:
       - oracle
     ports:
       - ${RD_PORT_01}:4440
+    platform: linux/amd64
     environment:
-      RUNDECK_GRAILS_URL: ${RD_PROTOCOL}://${RD_HOSTNAME}
+      RUNDECK_GRAILS_URL: ${RD_URL}
       RUNDECK_SERVER_FORWARDED: 'true'
       RUNDECK_DATABASE_DRIVER: ${RD_JDBC_DRIVER}
       RUNDECK_DATABASE_USERNAME: ${DB_USER}
@@ -23,7 +24,7 @@ services:
       RUNDECK_DATABASE_URL: jdbc:oracle:thin:@oracle:1521:XE
       RUNDECK_FEATURE_PAGEDJOBLIST_ENABLED: 'true'
   oracle:
-    hostname: ${DB_HOSTNAME}
+    hostname: oracle
     build:
       context: ${DB_CONTEXT}
     ports:
@@ -34,3 +35,4 @@ services:
       - 5500
     volumes:
        - ./scripts:/opt/oracle/scripts/startup
+    platform: linux/amd64
