@@ -11,6 +11,7 @@ services:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${RD_IMAGE}
+        RD_PORT: ${RD_PORT_01}
     deploy:
       resources:
         limits:
@@ -31,6 +32,7 @@ services:
       context: ${RD_CONTEXT}
       args:
         IMAGE: ${RD_IMAGE}
+        RD_PORT: ${RD_PORT_02}
     deploy:
       resources:
         limits:
@@ -40,7 +42,7 @@ services:
       - database
       - minio
     expose:
-      - ${RD_PORT_01}
+      - ${RD_PORT_02}
     env_file:
       - rundeck/environment.properties
     environment:
