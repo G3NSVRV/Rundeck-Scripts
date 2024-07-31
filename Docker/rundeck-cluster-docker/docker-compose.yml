@@ -119,3 +119,16 @@ services:
       - rundeck_02
     ports:
       - ${NODE_PORT}:22
+  runner:
+    hostname: runner
+    build:
+      context: ${RUNNER_CONTEXT}
+      args:
+        IMAGE: ${RUNNER_IMAGE}
+    links:
+      - rundeck_01
+      - rundeck_02
+    environment:
+      RUNNER_RUNDECK_CLIENT_ID: ${RUNNER_ID}
+      RUNNER_RUNDECK_SERVER_TOKEN: ${RUNNER_TOKEN}
+      RUNNER_RUNDECK_SERVER_URL: ${RD_URL}
