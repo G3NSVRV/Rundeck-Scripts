@@ -3,7 +3,8 @@
 echo "Rundeck Server hostname:"; read -r rundeckServer
 echo -e "\nRundeck username:"; read -r rundeckUser
 echo -e "\nRundeck password:"; read -r rundeckPass
-echo -e "\nProject Name:"; read -r projectName
+#echo -e "\nProject Name:"; read -r projectName
+echo -e "\nJob ID:"; read -r jobID
 #############################################
 # to run unatended mode, please comment the code above and uncomment the code below, and replace with your props
 #############################################
@@ -11,6 +12,7 @@ echo -e "\nProject Name:"; read -r projectName
 # rundeckUser="admin"
 # rundeckPass="admin"
 # projectName="test"
+# jobID="null"
 #############################################
 # Options Variables
 #############################################
@@ -28,7 +30,9 @@ curl "$curlOptions" -X "POST" -d "j_username=$rundeckUser" -d "j_password=$runde
 #curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/executions?"recentFilter=5n&max=20" | jq .
 #curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/executions/running?"max=20" | jq .
 #curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/project/"$projectName"/executions/metrics?"recentFilter=1d" | jq .
-curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/system/info | jq .
+#curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/system/info | jq .
+curl "$curlOptions" -X "GET" -H "Accept: application/$rundeckApiFormat" -H "Content-Type: application/$rundeckApiFormat" -b "$cookie" -c "$cookie" "$rundeckServer"/api/"$rundeckApiVersion"/job/"$jobID"/executions | jq .
+
 #done
 
 rm -f "$cookie"
