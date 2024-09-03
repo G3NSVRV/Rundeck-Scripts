@@ -1,4 +1,14 @@
 ARG IMAGE
 FROM ${IMAGE}
 
-CMD ["java","-Dcom.sun.management.jmxremote","-Dcom.sun.management.jmxremote.port=9010","-Dcom.sun.management.jmxremote.local.only=false","-Dcom.sun.management.jmxremote.authenticate=false","-Dcom.sun.management.jmxremote.ssl=false","-Djava.rmi.server.hostname=$(hostname)","-jar","pd-runner.jar"]
+ARG RD_URL
+
+USER root
+RUN apt -y update
+RUN apt -y install curl jq
+COPY runner-check.sh /home/runner/runner-check.sh
+RUN chmod +x /home/runner/runner-check.sh
+RUN sed -i "s/RD_URL/$(echo ${RD_URL} | sed 's/\//\\\//g')/g" /home/runner/runner-check.sh
+
+USER runner
+CMD ["/bin/bash", "-c", "/home/runner/runner-check.sh"]

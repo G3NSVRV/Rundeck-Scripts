@@ -4,6 +4,10 @@ volumes:
   db-data:
   minio-data:
 
+networks:
+  internal:
+    driver: bridge
+
 services:
   rundeck_01:
     hostname: ${RD_UUID_01}
@@ -17,9 +21,8 @@ services:
         limits:
           memory: ${RD_MEM}
     platform: linux/amd64
-    links:
-      - database
-      - minio
+    networks:
+      - internal
     expose:
       - ${RD_PORT_01}
     env_file:
@@ -38,9 +41,8 @@ services:
         limits:
           memory: ${RD_MEM}
     platform: linux/amd64
-    links:
-      - database
-      - minio
+    networks:
+      - internal
     expose:
       - ${RD_PORT_02}
     env_file:
@@ -54,6 +56,8 @@ services:
       resources:
         limits:
           memory: ${DB_MEM}
+    networks:
+      - internal
     volumes:
       - db-data:${DB_PATH}
     ports:
@@ -67,6 +71,8 @@ services:
       resources:
         limits:
           memory: ${MINIO_MEM}
+    networks:
+      - internal
     volumes:
       - minio-data:/data
     ports:
@@ -79,8 +85,8 @@ services:
     command: server /data --console-address ":${MINIO_CONSOLE_PORT}"
   mc:
     image: ${MC_IMAGE}
-    links:
-      - minio
+    networks:
+      - internal
     depends_on:
       - minio
     entrypoint: >
@@ -99,9 +105,8 @@ services:
         RD_PORT_01: ${RD_PORT_01}
         RD_PORT_02: ${RD_PORT_02}
         RD_URL: ${RD_URL}
-    links:
-      - rundeck_01
-      - rundeck_02
+    networks:
+      - internal
     ports:
       - ${NGINX_PORT}:${NGINX_PORT}
     environment:
@@ -114,9 +119,8 @@ services:
       args:
         IMAGE: ${NODE_IMAGE}
         NODE_PASS: ${NODE_PASS}
-    links:
-      - rundeck_01
-      - rundeck_02
+    networks:
+      - internal
     ports:
       - ${NODE_PORT}:22
   runner:
@@ -125,10 +129,7 @@ services:
       context: ${RUNNER_CONTEXT}
       args:
         IMAGE: ${RUNNER_IMAGE}
-    links:
-      - rundeck_01
-      - rundeck_02
-    environment:
-      RUNNER_RUNDECK_CLIENT_ID: ${RUNNER_ID}
-      RUNNER_RUNDECK_SERVER_TOKEN: ${RUNNER_TOKEN}
-      RUNNER_RUNDECK_SERVER_URL: ${RD_URL}
+        RD_URL: ${RD_URL}
+    platform: linux/amd64
+    networks:
+      - internal
